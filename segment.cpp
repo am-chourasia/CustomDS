@@ -50,8 +50,10 @@ class SegmentTree
 		if (start >= queryStart && end <= queryEnd)
 			return tree[index];
 		// partial overlap
-		//  __________queryStart .........................queryEnd
-		//	______s..................e______________
+		//  ___________queryStart ......................queryEnd_____________
+		//	______s....................e_____________________________________ OR
+		//  _________________________________s........................e______ OR
+		// 	_______s................................................e________
 		int mid = (start + end) / 2;
 		int left = query(2 * index + (indexSystem == 0), start, mid, queryStart, queryEnd);
 		int right = query(2 * index + 1 + (indexSystem == 0), mid + 1, end, queryStart, queryEnd);
@@ -96,7 +98,7 @@ class SegmentTree
 	}
 
 public:
-	SegmentTree(const int sizeOfArray, const int indexSystem) : indexSystem(indexSystem), baseArraySize(sizeOfArray), treeStart(indexSystem), treeEnd(sizeOfArray - (indexSystem == 0))
+	SegmentTree(const int sizeOfArray, const int indexSystem = 0) : indexSystem(indexSystem), baseArraySize(sizeOfArray), treeStart(indexSystem), treeEnd(sizeOfArray - (indexSystem == 0))
 	{
 		tree = new int[4 * sizeOfArray + 1];
 	}
@@ -134,7 +136,7 @@ int main()
 	// freopen("output.txt", "w", stdout);
 	// Sample Input:
 	// 1
-	// 8 4 
+	// 8 4
 	// 10 20 9 21 4 2 1 8
 	// 1 5  2 4  3 5  4 4
 
@@ -152,8 +154,7 @@ int main()
 		SegmentTree segt(n, 0);
 		segt.buildUpon(A);
 		segt.print();
-		segt.updateValue(3, 20);
-		segt.print();
+		// segt.updateValue(3, 20);
 
 		while (q--)
 		{
@@ -162,8 +163,8 @@ int main()
 			cout << segt.query(queryStart, queryEnd) << endl;
 		}
 
-		segt.updateRange(2, 4, 2);
-		segt.print();
+		// segt.updateRange(2, 4, 2);
+		// segt.print();
 		delete[] A;
 	}
 }
